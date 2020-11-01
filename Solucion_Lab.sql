@@ -3,8 +3,8 @@
 SELECT authors.au_id, au_lname as Last_Name, au_fname as First_Name, title as Title, pub_name as Publisher
 FROM world.authors
 join titleauthor on authors.au_id = titleauthor.au_id
-inner join titles on titleauthor.title_id = titles.title_id
-inner join publishers on titles.pub_id = publishers.pub_id
+left join titles on titleauthor.title_id = titles.title_id
+left join publishers on titles.pub_id = publishers.pub_id
 
 # Challenge 2 - Who Have Published How Many At Where?
 # Elevating from your solution in Challenge 1, query how many titles each author has published at each
@@ -13,7 +13,7 @@ inner join publishers on titles.pub_id = publishers.pub_id
 SELECT authors.au_id, au_lname as 'Last_Name', au_fname as 'First_Name', pub_name as 'Publisher', count(*) as 'Conteo'
 FROM world.authors
 join titleauthor on authors.au_id = titleauthor.au_id
-inner join titles on titleauthor.title_id = titles.title_id
+left join titles on titleauthor.title_id = titles.title_id
 inner join publishers on titles.pub_id = publishers.pub_id
 group by authors.au_id
 order by Conteo DESC;
