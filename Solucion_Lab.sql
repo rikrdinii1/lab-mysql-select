@@ -1,3 +1,4 @@
+USE world;
 #Lab | MySQL Select
 # Challenge 1 - Who Have Published What At Where?
 SELECT authors.au_id, au_lname as Last_Name, au_fname as First_Name, title as Title, pub_name as Publisher
@@ -33,16 +34,26 @@ order by Conteo DESC;
 CREATE TEMPORARY TABLE world.Ventas_Totales_por_Libro2
 select sales.title_id,sum(qty) as 'Ventas_Totales'
 from world.sales
-group by title_id:
+group by title_id;
 
 CREATE TEMPORARY TABLE world.Ventas_Totales_por_Escritor2
 SELECT titleauthor.au_id,sum(Ventas_Totales_por_Libro2.Ventas_Totales) as 'Ventas_Totales'
 FROM world.Ventas_Totales_por_Libro2
 join world.titleauthor on titleauthor.title_id = Ventas_Totales_por_Libro2.title_id
-group by au_id:
+group by au_id;
 
 SELECT authors.au_id, au_lname as 'Last_Name', au_fname as 'First_Name', Ventas_Totales_por_Escritor2.Ventas_Totales as 'Ventas_Totales'
 FROM Ventas_Totales_por_Escritor2
 join world.authors on Ventas_Totales_por_Escritor2.au_id = authors.au_id
 order by Ventas_Totales_por_Escritor2.Ventas_Totales desc
+limit 3;
 
+# Challenge 4 - Best Selling Authors Ranking
+# Now modify your solution in Challenge 3 so that the output will display all 23 authors instead of the top 3. 
+# Note that the authors who have sold 0 titles should also appear in your output 
+#(ideally display 0 instead of NULL as the TOTAL). Also order your results based on TOTAL from high to low.
+
+SELECT authors.au_id, au_lname as 'Last_Name', au_fname as 'First_Name', Ventas_Totales_por_Escritor2.Ventas_Totales as 'Ventas_Totales'
+FROM Ventas_Totales_por_Escritor2
+join world.authors on Ventas_Totales_por_Escritor2.au_id = authors.au_id
+order by Ventas_Totales_por_Escritor2.Ventas_Totales desc;
